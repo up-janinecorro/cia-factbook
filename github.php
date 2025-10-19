@@ -1,5 +1,5 @@
 <?php
-define('GITHUB_SECRET', trim(@file_get_contents('/var/www/factbook-2020/github.secret')));
+define('GITHUB_SECRET', trim(@file_get_contents('/var/www/html/github.secret')));
 
 $header = 'HTTP_X_HUB_SIGNATURE';
 $secret = GITHUB_SECRET;
@@ -9,6 +9,6 @@ $hash = 'sha1='.hash_hmac('sha1', $payload, $secret);
 if (isset($_SERVER[$header]) && $_SERVER[$header] === $hash) {
     $payload_decoded = json_decode($payload, true);
     if ($payload_decoded['ref'] === 'refs/heads/main') {
-        shell_exec('git reset --hard HEAD && git fetch origin main && git pull origin main');
+        shell_exec('git reset --hard origin main && git pull origin main');
     }
 }
